@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ALVA SharePoint Tile Layout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      color: #000;
+      background-color: #ffffff;
+      background-image: none;
+      overflow-x: hidden;
+    }
+
+    header, main { position: relative; z-index: 1; }
+
+    /* Tiles */
+    .tile {
+      position: relative;
+      border: 1px solid rgba(0,44,115,0.25);
+      background: linear-gradient(135deg, #002C73 0%, #00408C 50%, #0052A3 100%);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.25);
+      overflow: hidden;
+      border-radius: 1.25rem;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .tile:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+    }
+
+    .tile-media {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,0.06);
+    }
+
+    .tile-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .image-tint {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,44,115,0.18) 0%, rgba(0,82,163,0.12) 50%, rgba(0,44,115,0.22) 100%);
+      mix-blend-mode: normal;
+    }
+
+    .tile-link {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: block;
+      text-indent: -9999px;
+      overflow: hidden;
+      border-radius: inherit;
+      cursor: pointer;
+    }
+
+    /* Centered Learn More button */
+    .tile-btn {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.15);
+      color: #ffffff;
+      font-weight: 600;
+      padding: 0.8rem 1.8rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      opacity: 0;
+      transition: opacity 0.4s ease, background 0.3s ease, transform 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .tile:hover .tile-btn {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .tile-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Cards */
+    .panel {
+      height: 32rem;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(0,44,115,0.25);
+      background: linear-gradient(135deg, rgba(0,20,50,0.9) 0%, rgba(0,44,115,0.95) 50%, rgba(0,60,140,0.98) 100%);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      padding: 1.25rem;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .panel:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+    }
+
+    .title-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-description {
+      color: #fff;
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.85;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .panel:hover .card-description {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <main class="max-w-[95vw] mx-auto px-2 py-6 space-y-12">
+
+    <!-- Row 1 -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div class="lg:col-span-8">
+        <div class="tile relative h-[32rem] w-full">
+          <div class="tile-media" id="previewLeft">
+            <img src="https://luqzzzy.github.io/tiles/employee.jpg" alt="Employee of the Month" />
+          </div>
+          <div class="image-tint"></div>
+          <a href="#" class="tile-btn" id="btnLeft">Learn More →</a>
+          <a class="tile-link" id="tileLinkLeft" href="#" aria-label="Open Employee of the Month tile"></a>
+        </div>
+      </div>
+      <div class="lg:col-span-4 lg:pr-4 xl:pr-8">
+        <article class="panel">
+          <h2 class="title-heading">Employee of the Month</h2>
+          <div id="textRight" class="min-h-full prose prose-invert max-w-none" contenteditable="false">
+            <p class="card-description">
+              Recognizing excellence and dedication — our Employee of the Month goes above and beyond,
+              bringing teamwork, innovation, and passion to everything they do. Thank you for setting
+              the standard and inspiring the ALVA family every day.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Row 2 -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div class="lg:col-span-4 lg:pl-4 xl:pl-8">
+        <article class="panel">
+          <h2 class="title-heading">Monthly Newsletter</h2>
+          <div id="textLeft" class="min-h-full prose prose-invert max-w-none" contenteditable="false">
+            <p class="card-description">
+              Your inside look at everything happening across ALVA — from new product launches and
+              campaign highlights to team milestones and upcoming events. Stay connected and inspired
+              with this month’s stories, insights, and innovations.
+            </p>
+          </div>
+        </article>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="tile relative h-[32rem] w-full">
+          <div class="tile-media" id="previewRight">
+            <img src="https://luqzzzy.github.io/tiles/newsletter.jpg" alt="Monthly Newsletter" />
+          </div>
+          <div class="image-tint"></div>
+          <a href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library" class="tile-btn" id="btnRight" target="_blank" rel="noopener">Learn More →</a>
+          <a class="tile-link" id="tileLinkRight" href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library" target="_blank" rel="noopener" aria-label="Open Monthly Newsletter tile"></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Assign link destinations
+    const TILE1_URL = '#'; // replace with actual Employee of the Month link
+    const l = document.getElementById('tileLinkLeft');
+    const btnLeft = document.getElementById('btnLeft');
+
+    if (l && btnLeft) {
+      l.href = TILE1_URL;
+      l.target = '_blank';
+      l.rel = 'noopener';
+      btnLeft.href = TILE1_URL;
+      btnLeft.target = '_blank';
+      btnLeft.rel = 'noopener';
+    }
+  </script>
+</body>
+</html>
