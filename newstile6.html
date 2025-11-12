@@ -1,0 +1,77 @@
+<div id="imageTile">
+  <input type="file" id="uploadImage" accept="image/*" />
+  <button onclick="uploadToSharePoint()">Upload Image</button>
+  <div id="imageGallery"></div>
+</div>
+
+https://code.jquery.com/jquery-3.6.0.min.js</script>
+<script>
+  const siteUrl = "https://stingrayacc.sharepoint.com/sites/StingrayIntranet";
+  const folderPath = "SiteAssets/EmployeeSpotlight";
+  const password = "itdepartment";
+
+  function uploadToSharePoint() {
+    const userPassword = prompt("Enter password to upload:");
+    if (userPassword !== password) {
+      alert("Incorrect password.");
+      return;
+    }
+
+    const fileInput = document.getElementById("uploadImage");
+    const file = fileInput.files[0];
+    if (!file) return alert("Please select a file.");
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const arrayBuffer = e.target.result;
+      const fileName = file.name;
+
+      $.ajax({
+        url: `${siteUrl}/_api/web/GetFolderByServerRelativeUrl('${folderPath}')/Files/add(url='${fileName}',overwrite=true)`,
+        type: "POST",
+        data: arrayBuffer,
+        processData: false,
+        headers: {
+          "Accept": "application/json;odata=verbose",
+          "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+          "Content-Type": file.type
+        },
+        success: function () {
+          alert("Image uploaded successfully.");
+          loadImages();
+        },
+        error: function (err) {
+          console.error("Upload failed", err);
+          alert("Upload failed.");
+        }
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function loadImages() {
+    $.ajax({
+      url: `${siteUrl}/_api/web/GetFolderByServerRelativeUrl('${folderPath}')/Files`,
+      method: "GET",
+      headers: { "Accept": "application/json;odata=verbose" },
+      success: function (data) {
+        const gallery = document.getElementById("imageGallery");
+        gallery.innerHTML = "";
+        data.d.results.forEach(file => {
+          const img = document.createElement("img");
+          img.src = file.ServerRelativeUrl;
+          img.style.width = "100%";
+          img.style.borderRadius = "10px";
+          img.style.marginBottom = "10px";
+          gallery.appendChild(img);
+        });
+      },
+      error: function (err) {
+        console.error("Failed to load images", err);
+      }
+    });
+  }
+
+  // Load images on page load
+  document.addEventListener("DOMContentLoaded", loadImages);
+</script>
