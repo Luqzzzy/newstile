@@ -1,174 +1,236 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alternating 2-Tile Layout — SharePoint Member-Only</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Spotlight & Newsletter</title>
   <style>
-    :root { --mx: 50vw; --my: 50vh; }
-
-    /* Deep blue gradient background */
     body {
-      color: #fff;
-      background-color: #002C73;
-      background-image:
-        linear-gradient(180deg, #002C73 0%, #003E90 40%, #004FAF 100%);
-      background-attachment: fixed;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #003a8c, #001f4d);
+      transition: background 0.3s ease;
+      color: white;
       overflow-x: hidden;
     }
 
-    /* Cursor-follow lighting */
-    body::before {
-      content: "";
-      position: fixed; inset: 0; pointer-events: none; z-index: 0;
-      background-image:
-        radial-gradient(36rem 26rem at var(--mx) var(--my), rgba(255,255,255,0.12), transparent 70%),
-        radial-gradient(60rem 40rem at calc(var(--mx) + 10%) calc(var(--my) + 8%), rgba(200,220,255,0.08), transparent 80%),
-        radial-gradient(120rem 80rem at 20% 30%, rgba(120,160,255,0.05), transparent 60%),
-        radial-gradient(120rem 80rem at 80% 70%, rgba(100,140,255,0.05), transparent 60%);
-      mix-blend-mode: screen;
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 20px;
     }
 
-    header, main { position: relative; z-index: 1; }
+    .tile-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: stretch;
+    }
 
-    /* Tile styling */
-    .tile {
+    .image-tile, .text-tile {
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      padding: 20px;
+      background: linear-gradient(to right, #002f6c, #004b99);
+      flex: 1;
       position: relative;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: linear-gradient(135deg, #002C73 0%, #00408C 50%, #0052A3 100%);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.4);
-      overflow: hidden;
-      border-radius: 1.25rem;
+      transition: all 0.3s ease;
     }
 
-    .file-input {
-      appearance: none;
-      -webkit-appearance: none;
-      background: #0b5cf0;
-      color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      padding: 0.75rem 1rem;
-      font-size: 0.875rem;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
-    .file-input:hover { background: #0a53db; }
-    .file-input:disabled { background: #4663a1; cursor: not-allowed; opacity: 0.6; }
-
-    .helper { color: #dbeafe; font-size: 0.8rem; margin-top: 0.5rem; }
-    .file-names { margin-top: 0.75rem; font-size: 0.8rem; color: #e5edff; }
-
-    .title-heading {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: #ffffff;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
-    }
-
-    .edit-icon {
-      display: inline-flex;
+    .image-tile {
+      min-height: 700px;
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
       align-items: center;
-      justify-content: center;
-      margin-left: 0.5rem;
-      width: 1.25rem;
-      height: 1.25rem;
-      border-radius: 0.25rem;
-      background: rgba(255,255,255,0.2);
-      cursor: pointer;
-      visibility: hidden;
     }
 
-    .edit-icon svg { width: 0.75rem; height: 0.75rem; fill: #fff; }
-    .member .edit-icon { visibility: visible; }
+    .text-tile {
+      min-height: 300px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .image-tile:hover, .text-tile:hover {
+      box-shadow: 0 0 20px rgba(0, 123, 255, 0.6), 0 0 40px rgba(0, 123, 255, 0.4);
+      transform: scale(1.02);
+    }
+
+    .upload-btn {
+      background-color: #007bff;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .upload-btn:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+    }
+
+    .carousel {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .carousel img.active {
+      display: block;
+    }
+
+    .carousel-controls {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    .carousel-controls button {
+      background-color: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .tile-group {
+        flex-direction: column;
+      }
+
+      .image-tile {
+        min-height: 500px;
+      }
+
+      .text-tile {
+        min-height: 250px;
+      }
+    }
   </style>
 </head>
-<body class="text-white">
-  <header class="sticky top-0 z-10 bg-transparent border-b border-white/10 py-4"></header>
-
-  <main class="max-w-[95vw] mx-auto px-2 py-12 space-y-24">
-
-    <!-- ROW 1: Tile LEFT, text RIGHT -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-      <div class="lg:col-span-7">
-        <div class="tile dropzone relative h-[44rem] w-full flex items-center justify-center">
-          <div class="relative z-[1] text-center p-6">
-            <p class="helper">Upload assets for the left tile</p>
-            <input id="fileLeft" type="file" class="file-input" multiple aria-label="Upload files for left tile" />
-            <div id="fileLeftNames" class="file-names" aria-live="polite"></div>
-          </div>
+<body>
+  <div class="container">
+    <!-- Top Tile Group -->
+    <div class="tile-group">
+      <div class="image-tile">
+        <div class="carousel" id="carousel1"></div>
+        <div class="carousel-controls" id="controls1" style="display: none;">
+          <button onclick="prevImage(1)">‹</button>
+          <button onclick="nextImage(1)">›</button>
         </div>
+        <input type="file" id="upload1" multiple accept="image/*" />
+        <button class="upload-btn" id="btn1">Upload File</button>
       </div>
-
-      <div class="lg:col-span-5 lg:pr-4 xl:pr-8">
-        <article class="h-full rounded-2xl border border-white/10 bg-white/10 p-6 shadow-sm text-blue-50/95">
-          <h2 class="title-heading">Employee of the Month</h2>
-          <div id="textRight" class="min-h-40 prose prose-invert max-w-none focus:outline-none mt-3" contenteditable="false" aria-readonly="true">
-            <p>Add your marketing copy, specs, or notes here. Editable only for SharePoint members.</p>
-          </div>
-          <div class="edit-icon" id="editRightIcon" title="Edit section">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.39.242l-3.495 1.165a.5.5 0 01-.632-.632l1.165-3.495a1 1 0 01.242-.39l9.9-9.9a2 2 0 012.828 0zM15 4l1 1-9.9 9.9-.6.2.2-.6L15 4z"/></svg>
-          </div>
-        </article>
+      <div class="text-tile">
+        <h2>Employee of the Month</h2>
+        <p>Celebrate outstanding team members with this spotlight tile.</p>
       </div>
-    </section>
+    </div>
 
-    <!-- ROW 2: Text LEFT, Tile RIGHT -->
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-      <div class="lg:col-span-5 lg:pl-4 xl:pl-8">
-        <article class="h-full rounded-2xl border border-white/10 bg-white/10 p-6 shadow-sm text-blue-50/95">
-          <h2 class="title-heading">Monthly Newsletter</h2>
-          <div id="textLeft" class="min-h-40 prose prose-invert max-w-none focus:outline-none mt-3" contenteditable="false" aria-readonly="true">
-            <p>Pair your description with the right tile. Members can edit in SharePoint.</p>
-          </div>
-          <div class="edit-icon" id="editLeftIcon" title="Edit section">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 010 2.828l-9.9 9.9a1 1 0 01-.39.242l-3.495 1.165a.5.5 0 01-.632-.632l1.165-3.495a1 1 0 01.242-.39l9.9-9.9a2 2 0 012.828 0zM15 4l1 1-9.9 9.9-.6.2.2-.6L15 4z"/></svg>
-          </div>
-        </article>
+    <!-- Bottom Tile Group -->
+    <div class="tile-group">
+      <div class="text-tile">
+        <h2>Monthly Newsletter</h2>
+        <p>Stay updated with the latest company news and announcements.</p>
       </div>
-
-      <div class="lg:col-span-7">
-        <div class="tile dropzone relative h-[44rem] w-full flex items-center justify-center">
-          <div class="relative z-[1] text-center p-6">
-            <p class="helper">Upload assets for the right tile</p>
-            <input id="fileRight" type="file" class="file-input" multiple aria-label="Upload files for right tile" />
-            <div id="fileRightNames" class="file-names" aria-live="polite"></div>
-          </div>
+      <div class="image-tile">
+        <div class="carousel" id="carousel2"></div>
+        <div class="carousel-controls" id="controls2" style="display: none;">
+          <button onclick="prevImage(2)">‹</button>
+          <button onclick="nextImage(2)">›</button>
         </div>
+        <input type="file" id="upload2" multiple accept="image/*" />
+        <button class="upload-btn" id="btn2">Upload File</button>
       </div>
-    </section>
-
-  </main>
+    </div>
+  </div>
 
   <script>
-    const isMember = (typeof window.isSharePointMember === 'boolean') ? window.isSharePointMember : true;
+    const imageData = { 1: [], 2: [] };
+    const currentIndex = { 1: 0, 2: 0 };
+    const autoplayTimers = {};
 
-    if (isMember) {
-      document.body.classList.add('member');
-    }
+    function handleUpload(id) {
+      const input = document.getElementById(`upload${id}`);
+      const carousel = document.getElementById(`carousel${id}`);
+      const controls = document.getElementById(`controls${id}`);
+      imageData[id] = [];
+      currentIndex[id] = 0;
+      carousel.innerHTML = '';
+      clearInterval(autoplayTimers[id]);
 
-    function applyPermissions() {
-      const fileLeft = document.getElementById('fileLeft');
-      const fileRight = document.getElementById('fileRight');
-      const textLeft = document.getElementById('textLeft');
-      const textRight = document.getElementById('textRight');
-      if (fileLeft) fileLeft.disabled = !isMember;
-      if (fileRight) fileRight.disabled = !isMember;
-      [textLeft, textRight].forEach(el => {
-        if(!el) return;
-        el.setAttribute('contenteditable', isMember ? 'true' : 'false');
-        el.setAttribute('aria-readonly', isMember ? 'false' : 'true');
+      const files = Array.from(input.files);
+      if (files.length > 1) {
+        controls.style.display = 'flex';
+      } else {
+        controls.style.display = 'none';
+      }
+
+      let loadedCount = 0;
+      files.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          if (index === 0) img.classList.add('active');
+          carousel.appendChild(img);
+          imageData[id].push(img);
+          loadedCount++;
+
+          if (loadedCount === files.length && imageData[id].length > 1) {
+            autoplayTimers[id] = setInterval(() => nextImage(id), 5000);
+          }
+        };
+        reader.readAsDataURL(file);
       });
     }
-    applyPermissions();
 
-    const root = document.documentElement;
-    window.addEventListener('mousemove', (e) => {
-      const x = e.clientX; const y = e.clientY;
-      root.style.setProperty('--mx', x + 'px');
-      root.style.setProperty('--my', y + 'px');
+    function showImage(id, index) {
+      imageData[id].forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextImage(id) {
+      if (imageData[id].length === 0) return;
+      currentIndex[id] = (currentIndex[id] + 1) % imageData[id].length;
+      showImage(id, currentIndex[id]);
+    }
+
+    function prevImage(id) {
+      if (imageData[id].length === 0) return;
+      currentIndex[id] = (currentIndex[id] - 1 + imageData[id].length) % imageData[id].length;
+      showImage(id, currentIndex[id]);
+    }
+
+    document.getElementById('upload1').addEventListener('change', () => handleUpload(1));
+    document.getElementById('upload2').addEventListener('change', () => handleUpload(2));
+
+    document.body.addEventListener('mousemove', e => {
+      document.body.style.setProperty('--x', `${e.clientX}px`);
+      document.body.style.setProperty('--y', `${e.clientY}px`);
     });
   </script>
 </body>
