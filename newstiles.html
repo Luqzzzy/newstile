@@ -8,8 +8,7 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #003a8c, #001f4d);
-      transition: background 0.3s ease;
+      background-color: white;
       color: white;
       overflow-x: hidden;
     }
@@ -227,11 +226,6 @@
 
     document.getElementById('upload1').addEventListener('change', () => handleUpload(1));
     document.getElementById('upload2').addEventListener('change', () => handleUpload(2));
-
-    document.body.addEventListener('mousemove', e => {
-      document.body.style.setProperty('--x', `${e.clientX}px`);
-      document.body.style.setProperty('--y', `${e.clientY}px`);
-    });
   </script>
 </body>
 </html>
