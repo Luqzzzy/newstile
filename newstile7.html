@@ -11,6 +11,7 @@
       background-color: #ffffff;
       background-image: none;
       overflow-x: hidden;
+      margin: 0;
     }
 
     header, main { position: relative; z-index: 1; }
@@ -24,6 +25,7 @@
       overflow: hidden;
       border-radius: 1.25rem;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
+      height: 32rem; /* matches your original h-[32rem] intent on desktop */
     }
 
     .tile:hover {
@@ -137,18 +139,21 @@
       transform: translateY(0);
     }
 
-    /* --- Responsive Tweaks (no visual change on large screens) --- */
+    /* --- RESPONSIVE TWEAKS (no structural changes) --- */
 
-    /* Small & medium screens: let panels grow naturally, reduce fixed height tiles a bit */
-    @media (max-width: 1023px) {
+    /* Slightly smaller tiles/panels on medium screens */
+    @media (max-width: 1024px) {
+      .tile,
       .panel {
-        height: auto;
-        min-height: 20rem;
+        height: 26rem;
       }
+    }
 
-      /* Override the Tailwind h-[32rem] on smaller screens */
-      .tile.relative {
-        height: 20rem;
+    /* Even smaller on mobile for better fit */
+    @media (max-width: 768px) {
+      .tile,
+      .panel {
+        height: 22rem;
       }
 
       .title-heading {
@@ -158,17 +163,20 @@
       .card-description {
         font-size: 0.95rem;
       }
-
-      main {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
     }
 
-    /* Large screens: keep original intended height & feel */
-    @media (min-width: 1024px) {
-      .tile.relative {
-        height: 32rem; /* matches h-[32rem] */
+    @media (max-width: 480px) {
+      .tile,
+      .panel {
+        height: 20rem;
+      }
+
+      .title-heading {
+        font-size: 1.15rem;
+      }
+
+      .card-description {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -223,17 +231,13 @@
           </div>
           <div class="image-tint"></div>
           <a href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library"
-             class="tile-btn"
-             id="btnRight"
-             target="_blank"
-             rel="noopener">
+             class="tile-btn" id="btnRight" target="_blank" rel="noopener">
             Learn More →
           </a>
           <a class="tile-link"
              id="tileLinkRight"
              href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library"
-             target="_blank"
-             rel="noopener"
+             target="_blank" rel="noopener"
              aria-label="Open Monthly Newsletter tile"></a>
         </div>
       </div>
