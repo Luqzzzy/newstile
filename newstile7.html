@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -137,6 +136,41 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* --- Responsive Tweaks (no visual change on large screens) --- */
+
+    /* Small & medium screens: let panels grow naturally, reduce fixed height tiles a bit */
+    @media (max-width: 1023px) {
+      .panel {
+        height: auto;
+        min-height: 20rem;
+      }
+
+      /* Override the Tailwind h-[32rem] on smaller screens */
+      .tile.relative {
+        height: 20rem;
+      }
+
+      .title-heading {
+        font-size: 1.3rem;
+      }
+
+      .card-description {
+        font-size: 0.95rem;
+      }
+
+      main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    /* Large screens: keep original intended height & feel */
+    @media (min-width: 1024px) {
+      .tile.relative {
+        height: 32rem; /* matches h-[32rem] */
+      }
+    }
   </style>
 </head>
 <body>
@@ -188,8 +222,19 @@
             <img src="https://luqzzzy.github.io/tiles/newsletter.jpg" alt="Monthly Newsletter" />
           </div>
           <div class="image-tint"></div>
-          <a href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library" class="tile-btn" id="btnRight" target="_blank" rel="noopener">Learn More →</a>
-          <a class="tile-link" id="tileLinkRight" href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library" target="_blank" rel="noopener" aria-label="Open Monthly Newsletter tile"></a>
+          <a href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library"
+             class="tile-btn"
+             id="btnRight"
+             target="_blank"
+             rel="noopener">
+            Learn More →
+          </a>
+          <a class="tile-link"
+             id="tileLinkRight"
+             href="https://stingrayacc.sharepoint.com/sites/StingrayIntranet/Media%20library/Forms/All%20media.aspx?viewid=e2bb1aed-46cc-4a64-8bf0-04fef0e14572&npsAction=createList&id=%2Fsites%2FStingrayIntranet%2FMedia%20library%2FNewsletter2025%2Epdf&parent=%2Fsites%2FStingrayIntranet%2FMedia%20library"
+             target="_blank"
+             rel="noopener"
+             aria-label="Open Monthly Newsletter tile"></a>
         </div>
       </div>
     </section>
