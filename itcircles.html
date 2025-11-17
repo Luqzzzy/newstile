@@ -9,24 +9,18 @@
     body {
       margin: 0;
       padding: 0;
-      background: transparent !important; /* fully transparent */
-      color: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .wrapper {
-      padding: 50px 20px;
+      background: transparent !important;
       display: flex;
       justify-content: center;
-      background: transparent !important;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     .circle-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      width: 100%;
-      max-width: 1180px;
+      grid-template-columns: repeat(2, auto);
+      gap: 200px; /* increased by another 40px */
       background: transparent !important;
     }
 
@@ -49,65 +43,39 @@
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      margin: 0 auto 20px auto;
-      border: 4px solid #6a2bff;
-      box-shadow: 0 0 38px rgba(155, 77, 255, 0.60);
+      border: 3px solid #6a2bff;
+
+      /* soft neon purple glow */
+      box-shadow: 0 0 18px rgba(155, 77, 255, 0.35);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .circle-image:hover {
-      transform: scale(1.06);
-      box-shadow: 
-        0 0 60px rgba(185, 120, 255, 0.90),
-        0 0 100px rgba(155, 77, 255, 0.70);
-    }
-
-    .circle-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      margin-top: 10px;
-      color: #ffffff;
-    }
-
-    .circle-description {
-      margin-top: 12px;
-      font-size: 1rem;
-      line-height: 1.55;
-      color: #d6d6d6;
-      max-width: 420px;
-      margin-left: auto;
-      margin-right: auto;
-      background: transparent !important;
+      transform: scale(1.05);
+      box-shadow:
+        0 0 32px rgba(185, 120, 255, 0.55),
+        0 0 50px rgba(155, 77, 255, 0.40);
     }
   </style>
 </head>
 <body>
 
-  <div class="wrapper">
-    <div class="circle-grid">
+  <div class="circle-grid">
 
-      <!-- CIRCLE TILE 1 -->
-      <div class="circle-tile">
-        <div class="circle-image" 
-             style="background-image: url('https://luqzzzy.github.io/tiles/ittipofthemonth.jpeg');">
-        </div>
-        <div class="circle-title">IT TIP OF THE MONTH</div>
-
-        <div class="circle-description">
-          Restarting your computer at least once a week helps keep it running smoothly by clearing out temporary files, freeing up memory, preventing software glitches, installing important updates, and reducing crashes. It gives your system a fresh start, improves overall performance, and saves time for both you and the IT team.
-        </div>
+    <!-- CIRCLE TILE 1 -->
+    <div class="circle-tile">
+      <div class="circle-image"
+           style="background-image: url('https://luqzzzy.github.io/tiles/ittipofthemonth.jpeg');">
       </div>
-
-      <!-- CIRCLE TILE 2 -->
-      <div class="circle-tile">
-        <div class="circle-image" 
-             style="background-image: url('https://luqzzzy.github.io/tiles/itnews.jpg');">
-        </div>
-        <div class="circle-title">IT NEWS</div>
-      </div>
-
     </div>
+
+    <!-- CIRCLE TILE 2 -->
+    <div class="circle-tile">
+      <div class="circle-image"
+           style="background-image: url('https://luqzzzy.github.io/tiles/itnews.jpg');">
+      </div>
+    </div>
+
   </div>
 
 </body>
