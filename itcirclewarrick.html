@@ -6,55 +6,48 @@
   <title>Responsive Safe Tile</title>
 
   <style>
+    :root {
+      /* Tile scales with viewport but never bigger than 310px */
+      --tile-size: min(310px, 40vw, 40vh);
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       background: transparent !important;
       overflow: hidden;
-
       height: 100%;
       width: 100%;
     }
 
-    /* SAFE ZONE OFFSET */
+    /* Bottom-left anchor, slightly moved inward */
     .scale-wrapper {
       position: absolute;
-      right: 20px;   /* Safe from border */
-      bottom: 20px;  /* Safe from border */
-      transform-origin: bottom right;
-      transform: scale(var(--scale, 1));
+      left: 60px;
+      bottom: 60px;
+      transform-origin: bottom left;
     }
 
-    /* RESPONSIVE AUTO SCALE */
-    @media (max-width: 350px), (max-height: 350px) {
-      :root {
-        --scale: calc(min(100vw / 350, 100vh / 350));
-      }
-    }
-
-    /* CONTAINER */
     .circle-tile {
-      width: 310px;
-      height: 310px;
+      width: var(--tile-size);
+      height: var(--tile-size);
       position: relative;
       cursor: pointer;
     }
 
-    /* TRUE CIRCULAR MASK */
+    /* True circle with perfect rounded bottom */
     .circle-mask {
-      width: 310px;
-      height: 310px;
+      width: var(--tile-size);
+      height: var(--tile-size);
       border-radius: 50%;
-      overflow: hidden;   /* forces bottom rounding */
+      overflow: hidden;
       position: relative;
       background: #000;
       box-shadow: 0 0 18px rgba(155, 77, 255, 0.35);
       z-index: 1;
-
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    /* MAIN IMAGE */
     .circle-mask img {
       width: 100%;
       height: auto;
@@ -63,18 +56,19 @@
       left: 0;
     }
 
-    /* POP-OUT HEAD LAYER */
+    /* Pop-out top section with original correct mask ratio */
     .head-pop {
-      width: 310px;
+      width: var(--tile-size);
       position: absolute;
       left: 50%;
-      transform: translateX(-50%);
       bottom: 0;
+      transform: translateX(-50%);
       z-index: 2;
       pointer-events: none;
 
-      /* Keep only the top part outside the circle */
-      clip-path: inset(0 0 235px 0);
+      /* hides bottom ~235px of a 310px image = 75.8% */
+      clip-path: inset(0 0 calc(var(--tile-size) * 0.758) 0);
+
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
       mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
 
@@ -83,7 +77,7 @@
 
     .circle-tile:hover .circle-mask {
       transform: scale(1.05);
-      box-shadow: 
+      box-shadow:
         0 0 25px rgba(155, 77, 255, 0.7),
         0 0 50px rgba(155, 77, 255, 0.5);
     }
@@ -91,6 +85,7 @@
     .circle-tile:hover .head-pop {
       transform: translateX(-50%) scale(1.05);
     }
+
   </style>
 </head>
 
@@ -98,16 +93,13 @@
 
   <div class="scale-wrapper">
     <div class="circle-tile">
-
-      <!-- Round circle crop -->
       <div class="circle-mask">
         <img src="https://luqzzzy.github.io/newstile/warrick.png" alt="Warrick">
       </div>
 
-      <!-- Popout layer -->
       <img class="head-pop"
            src="https://luqzzzy.github.io/newstile/warrick.png"
-           alt="Warrick pop-out">
+           alt="Warrick Pop Out">
     </div>
   </div>
 
