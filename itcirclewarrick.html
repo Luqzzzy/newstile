@@ -3,12 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Responsive Glowing Tile</title>
+  <title>Responsive Glowing Tile – Centered</title>
 
   <style>
     :root {
-      /* Tile scales with viewport but never bigger than 310px */
-      --tile-size: min(310px, 40vw, 40vh);
+      /* MAIN CONTROLS */
+      --tile-size: min(310px, 40vw, 40vh);  
+      --hover-scale: 1.07;                 
+      --pop-clip: 0.758;                   
+      --easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Glow colours */
+      --glow-base: rgba(155, 77, 255, 0.6);
+      --glow-soft: rgba(155, 77, 255, 0.45);
+      --glow-strong: rgba(155, 77, 255, 0.9);
     }
 
     html, body {
@@ -18,14 +26,9 @@
       overflow: hidden;
       height: 100%;
       width: 100%;
-    }
-
-    /* Position: bottom-left, slightly inward */
-    .scale-wrapper {
-      position: absolute;
-      left: 60px;
-      bottom: 60px;
-      transform-origin: bottom left;
+      display: flex;
+      justify-content: center;   /* CENTER HORIZONTAL */
+      align-items: center;       /* CENTER VERTICAL */
     }
 
     .circle-tile {
@@ -35,38 +38,39 @@
       cursor: pointer;
     }
 
-    /* GLOW ANIMATION */
+    /* PURPLE GLOW ANIMATION */
     @keyframes glowPulse {
       0% {
         box-shadow:
-          0 0 20px rgba(155, 77, 255, 0.45),
-          0 0 40px rgba(155, 77, 255, 0.35);
+          0 0 20px var(--glow-base),
+          0 0 40px var(--glow-soft);
       }
       100% {
         box-shadow:
-          0 0 35px rgba(155, 77, 255, 0.9),
-          0 0 80px rgba(155, 77, 255, 0.75);
+          0 0 40px var(--glow-strong),
+          0 0 90px rgba(155, 77, 255, 0.75);
       }
     }
 
-    /* Circle: transparent, with animated glow around it */
+    /* Circle: black disc with glow */
     .circle-mask {
       width: var(--tile-size);
       height: var(--tile-size);
       border-radius: 50%;
       overflow: hidden;
-      position: relative;
+      background: #000;
 
-      background: transparent; /* tile itself transparent */
-
-      /* stronger static glow + pulsing animation */
       box-shadow:
-        0 0 25px rgba(155, 77, 255, 0.6),
-        0 0 60px rgba(155, 77, 255, 0.45);
+        0 0 25px var(--glow-base),
+        0 0 60px var(--glow-soft);
       animation: glowPulse 2.4s ease-in-out infinite alternate;
 
+      position: relative;
       z-index: 1;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+      transition:
+        transform 0.45s var(--easing),
+        box-shadow 0.45s var(--easing);
     }
 
     .circle-mask img {
@@ -77,51 +81,52 @@
       left: 0;
     }
 
-    /* Pop-out head layer */
+    /* Pop-out head */
     .head-pop {
       width: var(--tile-size);
       position: absolute;
-      left: 50%;
       bottom: 0;
+      left: 50%;
       transform: translateX(-50%);
-      z-index: 2;
       pointer-events: none;
+      z-index: 2;
 
-      /* hide lower ±75.8% to match original pop-out */
-      clip-path: inset(0 0 calc(var(--tile-size) * 0.758) 0);
+      clip-path: inset(0 0 calc(var(--tile-size) * var(--pop-clip)) 0);
 
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
       mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
 
-      transition: transform 0.25s ease;
+      transition:
+        transform 0.45s var(--easing);
     }
 
-    /* Hover: slightly bigger + extra bright glow */
+    /* Smooth hover pop */
     .circle-tile:hover .circle-mask {
-      transform: scale(1.05);
+      transform: scale(var(--hover-scale));
       box-shadow:
-        0 0 35px rgba(155, 77, 255, 0.9),
-        0 0 90px rgba(155, 77, 255, 0.85);
+        0 0 50px var(--glow-strong),
+        0 0 120px rgba(155, 77, 255, 0.85);
     }
 
     .circle-tile:hover .head-pop {
-      transform: translateX(-50%) scale(1.05);
+      transform: translateX(-50%) scale(var(--hover-scale));
     }
+
   </style>
 </head>
 
 <body>
 
-  <div class="scale-wrapper">
-    <div class="circle-tile">
-      <div class="circle-mask">
-        <img src="https://luqzzzy.github.io/newstile/warrick.png" alt="Warrick">
-      </div>
+  <div class="circle-tile">
 
-      <img class="head-pop"
-           src="https://luqzzzy.github.io/newstile/warrick.png"
-           alt="Warrick Pop Out">
+    <div class="circle-mask">
+      <img src="https://luqzzzy.github.io/newstile/warrick.png" alt="Warrick Base">
     </div>
+
+    <img class="head-pop"
+         src="https://luqzzzy.github.io/newstile/warrick.png"
+         alt="Warrick Pop">
+
   </div>
 
 </body>
