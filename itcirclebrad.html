@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Glowing Tile – Bottom Left Fixed</title>
+
+  <style>
+    :root {
+      /* FIXED TILE SIZE — does NOT shrink */
+      --tile-size: 310px;
+
+      /* Position padding from edges */
+      --offset-x: 60px;   /* distance from LEFT */
+      --offset-y: 60px;   /* distance from BOTTOM */
+
+      /* Hover + clipping controls */
+      --hover-scale: 1.05;
+      --pop-clip: 0.758;
+      --easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+      /* Glow colors */
+      --glow-base: rgba(155, 77, 255, 0.6);
+      --glow-soft: rgba(155, 77, 255, 0.45);
+      --glow-strong: rgba(155, 77, 255, 0.9);
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent !important;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* BOTTOM LEFT – with safe spacing */
+    .tile-wrapper {
+      position: absolute;
+      left: var(--offset-x);
+      bottom: var(--offset-y);
+      width: var(--tile-size);
+      height: var(--tile-size);
+      transform-origin: bottom left;
+    }
+
+    .circle-tile {
+      width: var(--tile-size);
+      height: var(--tile-size);
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* PURPLE GLOW ANIMATION */
+    @keyframes glowPulse {
+      0% {
+        box-shadow:
+          0 0 20px var(--glow-base),
+          0 0 40px var(--glow-soft);
+      }
+      100% {
+        box-shadow:
+          0 0 40px var(--glow-strong),
+          0 0 90px rgba(155, 77, 255, 0.75);
+      }
+    }
+
+    /* Black circle with glow */
+    .circle-mask {
+      width: var(--tile-size);
+      height: var(--tile-size);
+      border-radius: 50%;
+      overflow: hidden;
+      background: #000;
+
+      box-shadow:
+        0 0 25px var(--glow-base),
+        0 0 60px var(--glow-soft);
+
+      animation: glowPulse 2.4s ease-in-out infinite alternate;
+
+      position: relative;
+      z-index: 1;
+
+      transition:
+        transform 0.45s var(--easing),
+        box-shadow 0.45s var(--easing);
+    }
+
+    .circle-mask img {
+      width: 100%;
+      height: auto;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    /* Pop-out image */
+    .head-pop {
+      width: var(--tile-size);
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 2;
+
+      /* Hide the lower part for "pop" */
+      clip-path: inset(0 0 calc(var(--tile-size) * var(--pop-clip)) 0);
+
+      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+      mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+
+      transition: transform 0.45s var(--easing);
+    }
+
+    /* Smooth hover pop */
+    .circle-tile:hover .circle-mask {
+      transform: scale(var(--hover-scale));
+      box-shadow:
+        0 0 50px var(--glow-strong),
+        0 0 120px rgba(155, 77, 255, 0.85);
+    }
+
+    .circle-tile:hover .head-pop {
+      transform: translateX(-50%) scale(var(--hover-scale));
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="tile-wrapper">
+    <div class="circle-tile">
+
+      <div class="circle-mask">
+        <img src="https://luqzzzy.github.io/newstile/brad.png" alt="Warrick Base">
+      </div>
+
+      <img class="head-pop"
+           src="https://luqzzzy.github.io/newstile/brad.png"
+           alt="Warrick Pop">
+
+    </div>
+  </div>
+
+</body>
+</html>
