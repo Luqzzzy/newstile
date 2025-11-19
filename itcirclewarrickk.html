@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Responsive Safe Tile</title>
+  <title>Responsive Glowing Tile</title>
 
   <style>
     :root {
@@ -20,7 +20,7 @@
       width: 100%;
     }
 
-    /* Bottom-left anchor, slightly moved inward */
+    /* Position: bottom-left, slightly inward */
     .scale-wrapper {
       position: absolute;
       left: 60px;
@@ -35,15 +35,36 @@
       cursor: pointer;
     }
 
-    /* True circle with perfect rounded bottom */
+    /* GLOW ANIMATION */
+    @keyframes glowPulse {
+      0% {
+        box-shadow:
+          0 0 20px rgba(155, 77, 255, 0.45),
+          0 0 40px rgba(155, 77, 255, 0.35);
+      }
+      100% {
+        box-shadow:
+          0 0 35px rgba(155, 77, 255, 0.9),
+          0 0 80px rgba(155, 77, 255, 0.75);
+      }
+    }
+
+    /* Circle: transparent, with animated glow around it */
     .circle-mask {
       width: var(--tile-size);
       height: var(--tile-size);
       border-radius: 50%;
       overflow: hidden;
       position: relative;
-      background: #000;
-      box-shadow: 0 0 18px rgba(155, 77, 255, 0.35);
+
+      background: transparent; /* tile itself transparent */
+
+      /* stronger static glow + pulsing animation */
+      box-shadow:
+        0 0 25px rgba(155, 77, 255, 0.6),
+        0 0 60px rgba(155, 77, 255, 0.45);
+      animation: glowPulse 2.4s ease-in-out infinite alternate;
+
       z-index: 1;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
@@ -56,7 +77,7 @@
       left: 0;
     }
 
-    /* Pop-out top section with original correct mask ratio */
+    /* Pop-out head layer */
     .head-pop {
       width: var(--tile-size);
       position: absolute;
@@ -66,7 +87,7 @@
       z-index: 2;
       pointer-events: none;
 
-      /* hides bottom ~235px of a 310px image = 75.8% */
+      /* hide lower ±75.8% to match original pop-out */
       clip-path: inset(0 0 calc(var(--tile-size) * 0.758) 0);
 
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
@@ -75,17 +96,17 @@
       transition: transform 0.25s ease;
     }
 
+    /* Hover: slightly bigger + extra bright glow */
     .circle-tile:hover .circle-mask {
       transform: scale(1.05);
       box-shadow:
-        0 0 25px rgba(155, 77, 255, 0.7),
-        0 0 50px rgba(155, 77, 255, 0.5);
+        0 0 35px rgba(155, 77, 255, 0.9),
+        0 0 90px rgba(155, 77, 255, 0.85);
     }
 
     .circle-tile:hover .head-pop {
       transform: translateX(-50%) scale(1.05);
     }
-
   </style>
 </head>
 
