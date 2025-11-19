@@ -8,13 +8,15 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       background: transparent !important;
+
+      /* ALIGN TILE TO BOTTOM-LEFT */
       display: flex;
-      justify-content: center;
-      align-items: center;
+      justify-content: flex-start;
+      align-items: flex-end;
+
       height: 100vh;
-      gap: 250px; /* spacing between tiles */
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -47,7 +49,7 @@
     }
 
     .head-pop {
-      width: 310px;
+      width: 308px;
       height: auto;
       position: absolute;
       left: 51%;
@@ -76,19 +78,18 @@
     }
   </style>
 </head>
+
 <body>
 
-  <!-- MIDDLE TILE — WARRICK (updated link) -->
+  <!-- TILE (now bottom-left aligned) -->
   <div class="circle-tile">
     <div class="circle-mask">
-      <img src="https://luqzzzy.github.io/newstile/warrick.png" alt="Brad">
+      <img src="https://luqzzzy.github.io/newstile/warrick.png" alt="Warrick">
     </div>
 
     <img class="head-pop"
          src="https://luqzzzy.github.io/newstile/warrick.png"
-         alt="Brad pop-out">
-  </div>
-
+         alt="Warrick pop-out">
   </div>
 
 </body>
