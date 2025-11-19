@@ -3,19 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Responsive Glowing Tile – Tunable</title>
+  <title>Glowing Tile – Bottom Right Fixed</title>
 
   <style>
     :root {
-      /* MAIN CONTROLS – TWEAK THESE */
-      --tile-size: min(310px, 40vw, 40vh);  /* overall size of the circle */
-      --offset-x: 60px;                     /* distance from right edge */
-      --offset-y: 60px;                     /* distance from bottom edge */
-      --hover-scale: 1.05;                  /* how much it pops on hover */
-      --pop-clip: 0.758;                    /* proportion of image hidden from bottom on pop-out (0.75–0.8 range) */
+      /* FIXED TILE SIZE — does NOT shrink */
+      --tile-size: 310px;
+
+      /* Position spacing */
+      --offset-x: 60px;   /* distance from RIGHT now */
+      --offset-y: 60px;   /* distance from BOTTOM */
+
+      /* Hover + clipping controls */
+      --hover-scale: 1.04;
+      --pop-clip: 0.758;
       --easing: cubic-bezier(0.22, 1, 0.36, 1);
 
-      /* Glow colour controls */
+      /* Glow colors */
       --glow-base: rgba(155, 77, 255, 0.6);
       --glow-soft: rgba(155, 77, 255, 0.45);
       --glow-strong: rgba(155, 77, 255, 0.9);
@@ -25,16 +29,19 @@
       margin: 0;
       padding: 0;
       background: transparent !important;
-      overflow: hidden;
       height: 100%;
       width: 100%;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Bottom-right placement using tunable offsets */
-    .scale-wrapper {
+    /* BOTTOM RIGHT — NOT touching border */
+    .tile-wrapper {
       position: absolute;
       right: var(--offset-x);
       bottom: var(--offset-y);
+      width: var(--tile-size);
+      height: var(--tile-size);
       transform-origin: bottom right;
     }
 
@@ -45,7 +52,7 @@
       cursor: pointer;
     }
 
-    /* PURPLE GLOW ANIMATION */
+    /* Purple glow animation */
     @keyframes glowPulse {
       0% {
         box-shadow:
@@ -59,7 +66,7 @@
       }
     }
 
-    /* Base circle layer (black disc + glow) */
+    /* Black circle with glow */
     .circle-mask {
       width: var(--tile-size);
       height: var(--tile-size);
@@ -88,17 +95,16 @@
       left: 0;
     }
 
-    /* Pop-out head layer (second copy of image) */
+    /* Pop-out head */
     .head-pop {
       width: var(--tile-size);
       position: absolute;
-      left: 50%;
       bottom: 0;
+      left: 50%;
       transform: translateX(-50%);
       pointer-events: none;
       z-index: 2;
 
-      /* how much of the bottom of this image we hide – this makes them “mesh” */
       clip-path: inset(0 0 calc(var(--tile-size) * var(--pop-clip)) 0);
 
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
@@ -108,7 +114,7 @@
         transform 0.45s var(--easing);
     }
 
-    /* Smooth hover pop */
+    /* Smooth hover */
     .circle-tile:hover .circle-mask {
       transform: scale(var(--hover-scale));
       box-shadow:
@@ -119,22 +125,23 @@
     .circle-tile:hover .head-pop {
       transform: translateX(-50%) scale(var(--hover-scale));
     }
+
   </style>
 </head>
 
 <body>
 
-  <div class="scale-wrapper">
+  <div class="tile-wrapper">
     <div class="circle-tile">
-      <!-- Base circle image -->
+
       <div class="circle-mask">
-        <img src="https://luqzzzy.github.io/newstile/luke.png" alt="Warrick base">
+        <img src="https://luqzzzy.github.io/newstile/luke.png" alt="Warrick Base">
       </div>
 
-      <!-- Pop-out overlay image -->
       <img class="head-pop"
            src="https://luqzzzy.github.io/newstile/luke.png"
-           alt="Warrick pop-out">
+           alt="Warrick Pop">
+
     </div>
   </div>
 
