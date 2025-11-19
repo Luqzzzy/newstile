@@ -3,17 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Responsive Glowing Tile – Centered</title>
+  <title>Glowing Tile – Fixed Size</title>
 
   <style>
     :root {
-      /* MAIN CONTROLS */
-      --tile-size: min(310px, 40vw, 40vh);  
-      --hover-scale: 1.07;                 
-      --pop-clip: 0.758;                   
+      /* FIXED SIZE – does NOT change when embed resizes */
+      --tile-size: 310px;              /* <- adjust this if you ever want it bigger/smaller */
+      --hover-scale: 1.07;
+      --pop-clip: 0.758;               /* 0.75–0.8 if you want to tweak the pop seam */
       --easing: cubic-bezier(0.22, 1, 0.36, 1);
 
-      /* Glow colours */
       --glow-base: rgba(155, 77, 255, 0.6);
       --glow-soft: rgba(155, 77, 255, 0.45);
       --glow-strong: rgba(155, 77, 255, 0.9);
@@ -27,8 +26,8 @@
       height: 100%;
       width: 100%;
       display: flex;
-      justify-content: center;   /* CENTER HORIZONTAL */
-      align-items: center;       /* CENTER VERTICAL */
+      justify-content: center;   /* center horizontally */
+      align-items: center;       /* center vertically */
     }
 
     .circle-tile {
@@ -38,7 +37,7 @@
       cursor: pointer;
     }
 
-    /* PURPLE GLOW ANIMATION */
+    /* Glow animation */
     @keyframes glowPulse {
       0% {
         box-shadow:
@@ -52,7 +51,7 @@
       }
     }
 
-    /* Circle: black disc with glow */
+    /* Black circle + glow */
     .circle-mask {
       width: var(--tile-size);
       height: var(--tile-size);
@@ -92,7 +91,6 @@
       z-index: 2;
 
       clip-path: inset(0 0 calc(var(--tile-size) * var(--pop-clip)) 0);
-
       -webkit-mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
       mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
 
